@@ -1,10 +1,10 @@
 #AWS INFO
-KEY = ''
-SECRET = ''
-BUCKET_NAME = ''
+KEY = 'AKIARTK5WYTWWQ7GTL7R'
+SECRET = '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'
+BUCKET_NAME = 'footydashdata'
 
-file_path = ''
-s3_path = ''
+file_path = 'C:\\Users\\Sal Architetto\\Desktop\\'
+s3_path = 'C:\\Users\\Sal Architetto\\Desktop\\footy_data_sets'
 
 #SCRAPER INFO
 chromeDriver = r'C:\Users\Sal Architetto\Downloads\chromedriver\chromedriver_win32\chromedriver.exe'
