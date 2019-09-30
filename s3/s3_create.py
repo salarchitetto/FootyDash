@@ -25,5 +25,4 @@ def create_bucket(bucket_name, key, secret, region = None):
     except ClientError as e:
         print('Looks like something went wrong! ' + str(e))
 
-    print(('Bucket:' + str(bucket_name) + ' has been created!'))
-
+    print('Bucket:' + str(bucket_name) + ' has been created!')
