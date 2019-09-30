@@ -1,3 +1,12 @@
+#AWS INFO
+KEY = 'AKIARTK5WYTWWQ7GTL7R'
+SECRET = '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'
+BUCKET_NAME = 'footydashdata'
+
+file_path = 'C:\\Users\\Sal Architetto\\Desktop\\'
+s3_path = 'C:\\Users\\Sal Architetto\\Desktop\\footy_data_sets'
+
+#SCRAPER INFO
 chromeDriver = r'C:\Users\Sal Architetto\Downloads\chromedriver\chromedriver_win32\chromedriver.exe'
 
 uk_webpage = 'https://www.football-data.co.uk/englandm.php'
@@ -10,3 +19,5 @@ netherlands_webpage = 'https://www.football-data.co.uk/netherlandsm.php'
 belgium_webpage = 'https://www.football-data.co.uk/belgiumm.php'
 portugal_webpage = 'https://www.football-data.co.uk/portugalm.php'
 
+list_of_links = [uk_webpage, scot_webpage, germany_webpage, italy_webpage, spain_webpage, french_webpage,
+                 netherlands_webpage, belgium_webpage, portugal_webpage]

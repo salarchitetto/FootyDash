@@ -53,9 +53,19 @@ class create_link_path:
 
         return paths
 
+def create_directory(file_path, list_O_links):
+    for x in list_O_links:
+        os.mkdir(file_path + '\\' + x.split('/')[3][:-5])
+
 
 def grab_uk_data():
-    driver = webdriver.Chrome(executable_path=chromeDriver)
+
+    print('Working on the England Data')
+
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {'download.default_directory': r'C:\Users\Sal Architetto\Desktop\footy_data_sets\england'}
+    chrome_options.add_experimental_option('prefs', prefs)
+    driver = webdriver.Chrome(executable_path=chromeDriver, chrome_options=chrome_options)
 
     driver.get(uk_webpage)
 
@@ -71,7 +81,13 @@ def grab_uk_data():
     driver.close()
 
 def grab_scot_data():
-    driver = webdriver.Chrome(executable_path=chromeDriver)
+
+    print('Working on the Scottish Data')
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {'download.default_directory': r'C:\Users\Sal Architetto\Desktop\footy_data_sets\scotland'}
+    chrome_options.add_experimental_option('prefs', prefs)
+    driver = webdriver.Chrome(executable_path=chromeDriver, chrome_options=chrome_options)
+
 
     driver.get(scot_webpage)
 
@@ -86,7 +102,14 @@ def grab_scot_data():
     driver.close()
 
 def grab_germany_data():
-    driver = webdriver.Chrome(executable_path=chromeDriver)
+
+    print('Working on the German Data')
+
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {'download.default_directory': r'C:\Users\Sal Architetto\Desktop\footy_data_sets\germany'}
+    chrome_options.add_experimental_option('prefs', prefs)
+    driver = webdriver.Chrome(executable_path=chromeDriver, chrome_options=chrome_options)
+
 
     driver.get(germany_webpage)
 
@@ -101,7 +124,12 @@ def grab_germany_data():
     driver.close()
 
 def grab_italy_data():
-    driver = webdriver.Chrome(executable_path=chromeDriver)
+
+    print('Working on the Italian Data')
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {'download.default_directory': r'C:\Users\Sal Architetto\Desktop\footy_data_sets\italy'}
+    chrome_options.add_experimental_option('prefs', prefs)
+    driver = webdriver.Chrome(executable_path=chromeDriver, chrome_options=chrome_options)
 
     driver.get(italy_webpage)
 
@@ -116,7 +144,12 @@ def grab_italy_data():
     driver.close()
 
 def grab_spain_data():
-    driver = webdriver.Chrome(executable_path=chromeDriver)
+
+    print('Working on the Spanish Data')
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {'download.default_directory': r'C:\Users\Sal Architetto\Desktop\footy_data_sets\spain'}
+    chrome_options.add_experimental_option('prefs', prefs)
+    driver = webdriver.Chrome(executable_path=chromeDriver, chrome_options=chrome_options)
 
     driver.get(spain_webpage)
 
@@ -131,7 +164,12 @@ def grab_spain_data():
     driver.close()
 
 def grab_france_data():
-    driver = webdriver.Chrome(executable_path=chromeDriver)
+
+    print('Working on the French Data')
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {'download.default_directory': r'C:\Users\Sal Architetto\Desktop\footy_data_sets\france'}
+    chrome_options.add_experimental_option('prefs', prefs)
+    driver = webdriver.Chrome(executable_path=chromeDriver, chrome_options=chrome_options)
 
     driver.get(french_webpage)
 
@@ -146,7 +184,12 @@ def grab_france_data():
     driver.close()
 
 def grab_netherlands_data():
-    driver = webdriver.Chrome(executable_path=chromeDriver)
+
+    print('Working on the Netherland Data')
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {'download.default_directory': r'C:\Users\Sal Architetto\Desktop\footy_data_sets\netherlands'}
+    chrome_options.add_experimental_option('prefs', prefs)
+    driver = webdriver.Chrome(executable_path=chromeDriver, chrome_options=chrome_options)
 
     driver.get(netherlands_webpage)
 
@@ -160,7 +203,12 @@ def grab_netherlands_data():
     driver.close()
 
 def grab_belgium_data():
-    driver = webdriver.Chrome(executable_path=chromeDriver)
+
+    print('Working on the Belgium Data')
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {'download.default_directory': r'C:\Users\Sal Architetto\Desktop\footy_data_sets\belgium'}
+    chrome_options.add_experimental_option('prefs', prefs)
+    driver = webdriver.Chrome(executable_path=chromeDriver, chrome_options=chrome_options)
 
     driver.get(belgium_webpage)
 
@@ -174,7 +222,12 @@ def grab_belgium_data():
     driver.close()
 
 def grab_portugal_data():
-    driver = webdriver.Chrome(executable_path=chromeDriver)
+
+    print('Working on the Pork And Cheese Data')
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {'download.default_directory': r'C:\Users\Sal Architetto\Desktop\footy_data_sets\portugal'}
+    chrome_options.add_experimental_option('prefs', prefs)
+    driver = webdriver.Chrome(executable_path=chromeDriver, chrome_options=chrome_options)
 
     driver.get(portugal_webpage)
 
@@ -187,17 +240,3 @@ def grab_portugal_data():
         time.sleep(1)
 
     driver.close()
-
-
-if __name__ == '__main__':
-
-    grab_uk_data()
-    grab_scot_data()
-    grab_germany_data()
-    grab_italy_data()
-    grab_spain_data()
-    grab_france_data()
-    grab_netherlands_data()
-    grab_belgium_data()
-    grab_portugal_data()
-
