@@ -8,12 +8,13 @@ DB_NAME = ''
 CLUSTER_IDENTIFIER = ''
 REDSHIFT_USERNAME = ''
 REDSHIFT_PASSWORD = ''
+PORT = 5439
 
 file_path = r''
 s3_path = r''
 
 #SCRAPER INFO
-chromeDriver = r'C:\Users\Sal Architetto\Downloads\chromedriver\chromedriver_win32\chromedriver.exe'
+chromeDriver = r'\chromedriver.exe'
 
 uk_webpage = 'https://www.football-data.co.uk/englandm.php'
 scot_webpage = 'https://www.football-data.co.uk/scotlandm.php'

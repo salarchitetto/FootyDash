@@ -79,7 +79,8 @@ def create_seasons(path):
             try:
                 headers = [*pd.read_csv(os.path.join(subdir, file),encoding = 'ISO-8859-1', nrows=1)]
                 df = pd.read_csv(os.path.join(subdir, file), encoding="ISO-8859-1", sep=',',
-                                 usecols=[c for c in headers if c != 'Referee'])
+                                 usecols=[c for c in headers if c != ['Referee']])
+                df = df.rename(columns = {'AS': 'AAS'})
                 df = df[~df['Date'].isnull()]
                 real_dates = []
                 m = '\d+'
@@ -98,9 +99,42 @@ def create_seasons(path):
                     else:
                         real_dates.append(0)
 
-                df['Season'] = real_dates
+                df['season'] = real_dates
                 df.to_csv(os.path.join(subdir, file), index=False)
 
             except Exception as e:
                 print('Looks like something broke! ' + str(e))
+
+def choose_columns(path):
+    """
+
+    :param path:
+    :return:
+    """
+    for subdir, dirs, files in os.walk(path):
+        print('Working on Directory: ' + str(subdir.split('\\')[-1:][0].title()))
+        for file in files:
+            print(os.path.join(subdir, file))
+            df = pd.read_csv(os.path.join(subdir, file), encoding="ISO-8859-1", sep=',')
+            df = df.loc[:, df.columns.isin(['Date', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'FTR', 'HTHG', 'HTAG','HTR',
+                                'HS', 'AAS', 'HST', 'AST','HF', 'AF', 'HFKC', 'AFKC', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR',
+                                            'season', 'division'])]
+            df.columns = map(str.lower, df.columns)
+            df.to_csv(os.path.join(subdir, file), index=False)
+
+
+def rename_file(path):
+    """
+
+    :param path:
+    :return:
+    """
+    for subdir, dirs, files in os.walk(path):
+        for file in files:
+            if len(file.split(' ')) == 1:
+                print(file)
+                newfile = file[:2] + ' ' + str(file)
+                os.rename(os.path.join(subdir, file), os.path.join(subdir, newfile))
+            else:
+                pass
 

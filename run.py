@@ -1,13 +1,35 @@
 import os
 from scraper.csv_download import *
 from s3.s3_create import create_bucket
-from s3.s3_load import upload_file
-from s3.data_clean import divisions_column, add_division_names, create_seasons
-from redshift.create_redshift import redshift_connect, create_redshift_cluster, check_redshift_status
+from s3.s3_load import upload_file,  get_s3_keys
+from s3.data_clean import add_division_names, create_seasons, choose_columns, rename_file
+from redshift.create_redshift import aws_redshift, create_redshift_cluster, check_redshift_status
 from redshift.iam_roles import connect_iam, create_iam_role, add_roles, grab_iam_creds
+from redshift.load_redshift import upload_to_redshift, get_redshiftcluster_host, redshift_connection
+from sql_queries.create_tables import  drop_table_queries, create_table_queries, staging_table_create
 from config import *
+import psycopg2
+import time
 import warnings
 warnings.filterwarnings("ignore")
+
+def drop_tables(cur, conn):
+    for query in drop_table_queries:
+        print(query)
+        cur.execute(query)
+        conn.commit()
+
+def create_tables(cur, conn):
+    """
+
+    :param cur:
+    :param conn:
+    :return:
+    """
+    for query in create_table_queries:
+        print(query)
+        cur.execute(query)
+        conn.commit()
 
 if __name__ == '__main__':
     print('*' * 50)
@@ -42,7 +64,9 @@ if __name__ == '__main__':
     # print('creating divisions column')
     add_division_names(s3_path)
     print('*' * 50)
-
+    choose_columns(s3_path)
+    print('Changing some CSV names')
+    rename_file(s3_path)
     print('Creating the S3 bucket via your Amazon Credentials')
     create_bucket(BUCKET_NAME, KEY, SECRET)
 
@@ -64,9 +88,33 @@ if __name__ == '__main__':
     print('*' * 50)
 
     print('Connecting to Redshift via AWS')
-    redshift = redshift_connect(KEY,SECRET)
+    redshift = aws_redshift(KEY,SECRET)
     print('Creating the Redshift Cluster!')
     create_redshift_cluster(redshift, REDSHIFT_USERNAME, REDSHIFT_PASSWORD, roleArn, DB_NAME, CLUSTER_IDENTIFIER)
     print('Waiting on the redshift cluster to become available')
-    check_redshift_status(redshift, CLUSTER_IDENTIFIER)
 
+    while True:
+        ready = check_redshift_status(redshift, CLUSTER_IDENTIFIER)
+        if ready == 'available':
+            print('Redshift Cluster is now available!')
+            break
+
+    print('*' * 50)
+    print('Lets Create some tables!')
+
+    print('Uploading the staging data')
+
+    paths = get_s3_keys(BUCKET_NAME)
+    redshift_host = get_redshiftcluster_host(redshift, CLUSTER_IDENTIFIER)
+
+    redshift_conn = psycopg2.connect(host=redshift_host, dbname=DB_NAME, user=REDSHIFT_USERNAME,
+                                     password=REDSHIFT_PASSWORD, port=PORT)
+    redshift_cur = redshift_conn.cursor()
+
+    # drop_tables(redshift_conn, redshift_cur)
+    create_tables(redshift_cur, redshift_conn)
+
+    upload_to_redshift(paths, KEY, SECRET,roleArn, redshift_conn, redshift_cur)
+    print('*' * 50)
+
+    print('DONE')

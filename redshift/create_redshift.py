@@ -5,7 +5,7 @@ from redshift.iam_roles import create_iam_role, grab_iam_creds
 import json
 
 
-def redshift_connect(key, secret):
+def aws_redshift(key, secret):
     """
     connect to redshift
     """
@@ -60,11 +60,7 @@ def check_redshift_status(redshift, cluster_identifier):
     keysToShow = ["ClusterStatus"]
     x = [(k, v) for k,v in props.items() if k in keysToShow]
 
-    while True:
-        if x[0][1] == 'available':
-            print('Redshift cluster is now available!')
-            return True
-        else:
-            continue
+    return x[0][1]
+
 
 
