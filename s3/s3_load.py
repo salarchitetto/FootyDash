@@ -2,6 +2,7 @@ import os
 import logging
 import boto3
 from botocore.exceptions import ClientError
+from config import *
 
 def upload_file(bucket, path, key, secret):
     """Upload a file to an S3 bucket
@@ -26,3 +27,13 @@ def upload_file(bucket, path, key, secret):
                 return False
 
     print('Files have been uploaded to S3!')
+
+def get_s3_keys(bucket):
+    """Get a list of keys in an S3 bucket."""
+    keys = []
+    client = boto3.client('s3', aws_access_key_id=KEY,
+                          aws_secret_access_key=SECRET)
+    resp = client.list_objects_v2(Bucket=bucket)
+    for obj in resp['Contents']:
+        keys.append(obj['Key'])
+    return keys
