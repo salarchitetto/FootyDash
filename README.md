@@ -65,7 +65,7 @@ Redshift is not a free service and does cost a good bit if you keep this running
 delete the cluster and re-run this program. Just a heads up there is a portion of the program where it waits until
 the Redshift cluster actually becomes available, this may take some time. 
 
-##Definitions for the data in the staging table for this program:
+## Definitions for the data in the staging table for this program:
     Key to results data:
     
     Date = Match Date (dd/mm/yy)
@@ -100,10 +100,17 @@ the Redshift cluster actually becomes available, this may take some time.
     HR = Home Team Red Cards
     AR = Away Team Red Cards
     
-##Whats to come:
+## Whats to come:
 I want to build out more tables and possibly get more data from more sources into the Redshift Warehouse. I will 
 create a new repository for the visual portion of this project, but I need to get more stats together! You can find my 
 old project here, but a much much less robust way of uploading this data and very slow calculations in plotly dash. 
 (https://github.com/salarchitetto/Footy)
 
-##Thanks for taking a look. 
+## Other Scenarios
+I think if they data increased 100x I would need to find a way to better map the data from S3 to Redshift. 
+The way i'm doing it now works completely fine but I don't think it's scalable. Right now this ETL pipeline will 
+only run once, and that's up to you on when you'd like to run it. If it need to run every day I would set up 
+another portion in my pipeline which would include Apaches Airshift. We would be able to set up the DAG to run daily
+at 7am. I believe I will implement this in the near future. I think I would only need to tweak some minor things 
+for this to be accessed to 100 people. I have the function to create the roles, I could just create another function to
+actually have it create user's who could then be able to login into the cluster/S3 bucket. 
