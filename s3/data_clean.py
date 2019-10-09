@@ -4,9 +4,8 @@ import pandas as pd
 
 def divisions_column(file, division_name):
     """
-
-    :param file:
-    :return:
+    Adds the actual division name of the teams in the file since
+    the files don't provide them.
     """
 
     headers = [*pd.read_csv(file,encoding = 'ISO-8859-1', nrows=1)]
@@ -107,9 +106,7 @@ def create_seasons(path):
 
 def choose_columns(path):
     """
-
-    :param path:
-    :return:
+    We only want a certain set of columns for our warehouse so here we subset the data
     """
     for subdir, dirs, files in os.walk(path):
         print('Working on Directory: ' + str(subdir.split('\\')[-1:][0].title()))
@@ -125,9 +122,8 @@ def choose_columns(path):
 
 def rename_file(path):
     """
-
-    :param path:
-    :return:
+    I found that there was an issue with some of the file names when actually uploading them into
+    the Redshift cluster. So this renames the file if they are only (B1) (D1) (E1) etc.
     """
     for subdir, dirs, files in os.walk(path):
         for file in files:

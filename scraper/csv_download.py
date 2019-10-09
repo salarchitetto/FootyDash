@@ -4,6 +4,10 @@ from selenium import webdriver
 from config import *
 
 class create_link_path:
+    """
+    This class here uses selenium to snag data from a ton of websites
+    which have the specific Footy information we need.
+    """
     league_dictionary = {'premier_league': 'E0',
                          'championship' : 'E1',
                          'scot_prem': 'SC0',

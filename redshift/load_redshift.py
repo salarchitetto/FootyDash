@@ -6,10 +6,7 @@ from sql_queries.create_tables import staging_copy
 
 def get_redshiftcluster_host(redshift, cluster_identifier):
     """
-
-    :param redshift:
-    :param cluster_identifier:
-    :return:
+    This is a function to get the redshift host address
     """
 
     props = redshift.describe_clusters(ClusterIdentifier=cluster_identifier)['Clusters'][0]
@@ -20,13 +17,7 @@ def get_redshiftcluster_host(redshift, cluster_identifier):
 
 def redshift_connection(host, dbname, user, password, port=5439):
     """
-    Connection to redshift database
-    :param host:
-    :param dbname:
-    :param user:
-    :param password:
-    :param port:
-    :return:
+    Connection to redshift warehouse
     """
 
     global conn, cur
@@ -42,11 +33,9 @@ def redshift_connection(host, dbname, user, password, port=5439):
 
 def upload_to_redshift(paths, key, secret, roleArn, conn, cur):
     """
-
-    :param paths:
-    :param key:
-    :param secret:
-    :return:
+    This function loads through each specific file in the S3 bucket we've created.
+    From there it grabs the column names so that redshift knows which columns to
+    match up, from the CSV to redshift.
     """
     client = boto3.client('s3', aws_access_key_id=key,
                           aws_secret_access_key=secret)

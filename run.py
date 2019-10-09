@@ -6,7 +6,8 @@ from s3.data_clean import add_division_names, create_seasons, choose_columns, re
 from redshift.create_redshift import aws_redshift, create_redshift_cluster, check_redshift_status
 from redshift.iam_roles import connect_iam, create_iam_role, add_roles, grab_iam_creds
 from redshift.load_redshift import upload_to_redshift, get_redshiftcluster_host, redshift_connection
-from sql_queries.create_tables import  drop_table_queries, create_table_queries, staging_table_create
+from sql_queries.create_tables import  drop_table_queries, create_table_queries
+from sql_queries.insert_tables import insert_queries
 from config import *
 import psycopg2
 import time
@@ -14,6 +15,10 @@ import warnings
 warnings.filterwarnings("ignore")
 
 def drop_tables(cur, conn):
+    """
+    Drops tables in the warehouse
+    """
+
     for query in drop_table_queries:
         print(query)
         cur.execute(query)
@@ -21,12 +26,20 @@ def drop_tables(cur, conn):
 
 def create_tables(cur, conn):
     """
-
-    :param cur:
-    :param conn:
-    :return:
+    Loops through and runs the create statements
     """
+
     for query in create_table_queries:
+        print(query)
+        cur.execute(query)
+        conn.commit()
+
+def insert_tables(cur,conn):
+    """
+    Loops through and runs the insert statements
+    """
+
+    for query in insert_queries:
         print(query)
         cur.execute(query)
         conn.commit()
@@ -56,7 +69,7 @@ if __name__ == '__main__':
     print('*' * 50)
 
     print('Cleaning up the CSVs, should take a quick second.')
-    time.sleep(10)
+    time.sleep(5)
 
     print('creating seasons columns')
     create_seasons(s3_path)
@@ -101,20 +114,18 @@ if __name__ == '__main__':
 
     print('*' * 50)
     print('Lets Create some tables!')
-
     print('Uploading the staging data')
 
     paths = get_s3_keys(BUCKET_NAME)
     redshift_host = get_redshiftcluster_host(redshift, CLUSTER_IDENTIFIER)
-
-    redshift_conn = psycopg2.connect(host=redshift_host, dbname=DB_NAME, user=REDSHIFT_USERNAME,
-                                     password=REDSHIFT_PASSWORD, port=PORT)
-    redshift_cur = redshift_conn.cursor()
-
-    # drop_tables(redshift_conn, redshift_cur)
+    redshift_conn, redshift_cur = redshift_connection(redshift_host, DB_NAME,REDSHIFT_USERNAME, REDSHIFT_PASSWORD)
+    print('Dropping some tables.. if they somehow exists...')
+    drop_tables(redshift_cur, redshift_conn)
+    print('Creating some tables')
     create_tables(redshift_cur, redshift_conn)
-
+    print('UPLOADING FOOTY DATA TO REDSHIFT CLUSTER')
     upload_to_redshift(paths, KEY, SECRET,roleArn, redshift_conn, redshift_cur)
+    print('Loading up the rest of the tables')
+    insert_tables(redshift_cur, redshift_conn)
     print('*' * 50)
-
-    print('DONE')
+    print('DONE: Everything is all set. Enjoy the data!')

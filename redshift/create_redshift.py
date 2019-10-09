@@ -20,8 +20,8 @@ def aws_redshift(key, secret):
 def create_redshift_cluster(redshift, awsuser, password, iamRole,
                             dbname, identifier):
     """
-
-    :return:
+    This function essentially creates the redshift cluster
+    with the parameters in the config file
     """
 
     try:
@@ -49,10 +49,9 @@ def create_redshift_cluster(redshift, awsuser, password, iamRole,
 
 def check_redshift_status(redshift, cluster_identifier):
     """
-
-    :param redshift:
-    :param cluster_identifier:
-    :return:
+    This checks to see if the cluster is actually available
+    This is used in run.py in a while loop - once available it
+    breaks the loop
     """
 
     props = redshift.describe_clusters(ClusterIdentifier=cluster_identifier)['Clusters'][0]

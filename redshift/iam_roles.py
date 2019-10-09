@@ -6,9 +6,6 @@ import json
 def connect_iam(key, secret):
     """
     makes a connection to iam user using aws creds
-    :param key:
-    :param secret:
-    :return:
     """
 
     iam = boto3.client('iam', aws_access_key_id=key,
@@ -18,9 +15,7 @@ def connect_iam(key, secret):
 
 def create_iam_role(iam, iam_role_name):
     """
-
-    :param iam:
-    :return:
+    This creates an IAM Role for our redshift cluster
     """
 
     try:
@@ -40,10 +35,8 @@ def create_iam_role(iam, iam_role_name):
 
 def add_roles(iam, iam_role_name):
     """
-
-    :param iam:
-    :param iam_role_name:
-    :return:
+    We need specific permissions for us to actually user the data
+    so here they are.
     """
 
     roles = ['AmazonRedshiftFullAccess', 'AmazonRedshiftQueryEditor',
