@@ -110,7 +110,7 @@ old project here, but a much much less robust way of uploading this data and ver
 I think if they data increased 100x I would need to find a way to better map the data from S3 to Redshift. 
 The way i'm doing it now works completely fine but I don't think it's scalable. Right now this ETL pipeline will 
 only run once, and that's up to you on when you'd like to run it. If it need to run every day I would set up 
-another portion in my pipeline which would include Apaches Airshift. We would be able to set up the DAG to run daily
+another portion in my pipeline which would include Apache's Airflow. We would be able to set up the DAG to run daily
 at 7am. I believe I will implement this in the near future. I think I would only need to tweak some minor things 
 for this to be accessed to 100 people. I have the function to create the roles, I could just create another function to
 actually have it create user's who could then be able to login into the cluster/S3 bucket. 
