@@ -134,3 +134,21 @@ def rename_file(path):
             else:
                 pass
 
+def check_for_zero(path):
+    """
+    For some reason there are zeroes in the date columns for these CSV's
+    so this is checking for that and actaully getting the season date
+    for the leagues
+    :param path: path the the csv's
+    :return: cleaned data
+    """
+
+    for subdir, dirs, files in os.walk(path):
+        for file in files:
+            print(os.path.join(subdir, file))
+            df = pd.read_csv(os.path.join(subdir, file), encoding="ISO-8859-1", sep=',')
+            not_zero = list(df[df['season'] != '0']['season'])[0]
+
+            df['season'] = not_zero
+            df.to_csv(os.path.join(subdir, file), index=False)
+

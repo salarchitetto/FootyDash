@@ -2,7 +2,7 @@ import os
 from scraper.csv_download import *
 from s3.s3_create import create_bucket
 from s3.s3_load import upload_file,  get_s3_keys
-from s3.data_clean import add_division_names, create_seasons, choose_columns, rename_file
+from s3.data_clean import add_division_names, create_seasons, choose_columns, rename_file, check_for_zero
 from redshift.create_redshift import aws_redshift, create_redshift_cluster, check_redshift_status
 from redshift.iam_roles import connect_iam, create_iam_role, add_roles, grab_iam_creds
 from redshift.load_redshift import upload_to_redshift, get_redshiftcluster_host, redshift_connection
@@ -78,6 +78,9 @@ if __name__ == '__main__':
     add_division_names(s3_path)
     print('*' * 50)
     choose_columns(s3_path)
+    print('*' * 50)
+    check_for_zero(s3_path)
+    print('*' * 50)
     print('Changing some CSV names')
     rename_file(s3_path)
     print('Creating the S3 bucket via your Amazon Credentials')
