@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS staging_footy_matches (
 """)
 
 staging_copy = ("""
-    copy staging_footy_matches {} from 's3://footydashdata/{}'
+    copy staging_footy_matches {} from 's3://footydatabucket/{}'
     credentials 'aws_iam_role={}'
     region 'us-east-1'
     compupdate off
